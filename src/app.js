@@ -5,6 +5,18 @@ import Modal from 'react-modal';
 import { createStore } from 'redux';
 import './style.css';
 
+// Custom styles for React Modal
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)'
+  }
+};
+
 // Create actions for redux
 const VIEW_PRODUCT = 'VIEW_PRODUCT';
 const ADD_PRODUCT = 'ADD_PRODUCT';
@@ -153,10 +165,12 @@ class App extends React.Component {
 
   handleSortChange(event) {
    store.dispatch(setSort(event.target.value));
+   store.dispatch(viewProduct(""));
   }
 
   handleFilterChange(event) {
     store.dispatch(setFilter(event.target.value));
+    store.dispatch(viewProduct(""));
   }
 
   render() {
@@ -165,23 +179,25 @@ class App extends React.Component {
     products = sortProducts(products, this.state.sort); 
     
     return (
-      <div className="mainBody">
-        <div>
-          <h2>AGN - Jinjang Utara Community Mart</h2>
-          <button onClick={this.onProductAddClick}>Add</button>
-          <div>
+      <div className="appBox">
+        <div className="appWrapper">
+          <div className="banner">
+            <span>Jinjang Utara Community Mart</span>
+            <button onClick={this.onProductAddClick}>Add</button>
+          </div>
+          <div className="toolbar">
             <ToolBar
               handleSearchChange={this.handleSearchChange}
               search={this.state.search}
               handleFilterChange={this.handleFilterChange}
               handleSortChange={this.handleSortChange} />
           </div>
-        </div>
-        <div className='productPane'>
-          <ProductsList 
-            products={products} 
-            onProductItemClick={this.onProductItemClick} />
-          <ProductDetail products={products} selected={this.state.selected} />
+          <div className='productPane'>
+            <ProductsList
+              products={products}
+              onProductItemClick={this.onProductItemClick} />
+            <ProductDetail products={products} selected={this.state.selected} />
+          </div>
         </div>
       </div> 
     )
@@ -202,18 +218,18 @@ class ProductsList extends React.Component {
         <ProductItem 
           key={index} 
           index={index}
-          id={item.id}
           name={item.name}
           price={item.price}
           category={item.category}
+          image={item.image}
           onProductItemClick={this.props.onProductItemClick} />
       );
     });
     return (
       <div className="list">
-        <ol>
+        <ul className="productList">
           {list}
-        </ol>
+        </ul>
       </div>
     )
   }
@@ -233,8 +249,24 @@ class ProductItem extends React.Component {
   render() {
     var props = this.props;
     return (
-      <li id={props.index} onClick={this.onProductItemClick}>
-        {props.name} Price: RM{props.price} Category: {props.category}
+      <li>
+        <div className="product" onClick={this.onProductItemClick} id={props.index}>
+          <div className="productImage">
+            <img src={props.image} alt="image" />
+          </div>
+          <div className="productListDetail">
+            <div className="productName">
+              Name: <span>{props.name}</span>
+            </div>
+            <div className="productCategory">
+              Category: <span>{props.category}</span>
+            </div>
+            <div className="productPrice">
+              Price: <span>RM{props.price}</span>
+            </div>
+          </div>          
+        </div>
+        <hr className="seperator" />
       </li>
     )
   }
@@ -295,28 +327,50 @@ class ProductDetail extends React.Component {
     var notSelected = this.props.selected == "";
     if (notSelected) {
       return (
-        <div></div>
+        <div className='details'></div>
       ) 
     } else {
         var product = this.props.products[this.props.selected];
       return (
         <div className='details'>
-          <img src={product.image} /><br />
-          Name: {product.id}<br />
-          Description: {product.description}<br />
-          Price: {product.price}<br />
-          Category: {product.category} <br />
-          Quantity: {product.quantity} <br />
-          <button onClick={this.openModal}>Edit Product</button>
+          <div className='detail'>
+            <div className='detailImageBox'>
+              <img src={product.image} alt="image" />
+            </div>
+            <div className="detailDescription">
+              <div className="detailName">
+                Name: {product.name}
+              </div>
+              <div className="detailDesc">
+                <span className="desc">Description: {product.description}</span>
+              </div>
+              <div className="detailPrice">
+                Price: RM{product.price}
+              </div>
+              <div className="detailCategory">
+                Category: {product.category}
+              </div>
+              <div className="detailQuantity">
+                Quantity: {product.quantity}
+              </div>
+              <div className="editButton">
+                <button onClick={this.openModal}>Edit Product</button>
+              </div>
+            </div>
+          </div>       
           <Modal
             isOpen={this.state.modalIsOpen}
             onAfterOpen={this.afterOpenModal}
             onRequestClose={this.closeModal}
             ariaHideApp={false}
+            style={customStyles}
           >
             <h2>Edit Product Details</h2>
-            <EditProductForm product={product} handleInputChange={this.handleInputChange} handleFormSubmit={this.handleFormSubmit} />
-            <button onClick={this.closeModal}>Cancel</button>
+            <EditProductForm 
+              product={product} 
+              handleInputChange={this.handleInputChange} 
+              handleFormSubmit={this.handleFormSubmit}
+              closeModal={this.closeModal} />
           </Modal>
         </div>
       )
@@ -341,19 +395,19 @@ class EditProductForm extends React.Component {
       <form onSubmit={handleFormSubmit}>
         <table>
           <tbody>
-            <tr>
+            <tr className="editFormRow">
               <td><label>Product Name: </label></td>
               <td><input type="text" name="name" onChange={handleInputChange}/></td>
             </tr>
-            <tr>
+            <tr className="editFormRow">
               <td><label>Product Description: </label></td>
               <td><input type="text" name="description" onChange={handleInputChange}/></td>
             </tr>
-            <tr>
+            <tr className="editFormRow">
               <td><label>Product Price: </label></td>
               <td><input type="text" name="price" onChange={handleInputChange}/></td>
             </tr>
-            <tr>
+            <tr className="editFormRow">
               <td><label>Category: </label></td>
               <td>
                 <select name="category" onChange={handleInputChange} defaultValue={"Select A Category"}>
@@ -364,13 +418,16 @@ class EditProductForm extends React.Component {
                 </select>
               </td>
             </tr>
-            <tr>
+            <tr className="editFormRow">
               <td><label>Product Quantity: </label></td>
               <td><input type="text" name="quantity" onChange={handleInputChange}/></td>
             </tr>
           </tbody>
         </table>
-        <input type="submit" name="submit" value="Save changes" />
+        <div className="formButtonGroup">
+          <input type="submit" name="submit" value="Save changes" />
+          <input type="button" value="Cancel" onClick={this.props.closeModal} />
+        </div>
       </form>
     )
   }
@@ -384,26 +441,32 @@ class ToolBar extends React.Component {
 
   render() {
     return (
-      <div>
-        <input 
-          type="text" 
-          name="search" 
-          value={this.props.search} 
-          onChange={this.props.handleSearchChange} 
-          placeholder="Search Products" />
-        <label>Sort: </label>
-        <select name='sort' onChange={this.props.handleSortChange}>
-          <option value="created">By Created</option>
-          <option value="asc">By Price - Ascending</option>
-          <option value="desc">By Price - Descending</option>
-        </select>
-        <label>Filter: </label>
-        <select name="filter" onChange={this.props.handleFilterChange}>
-          <option value="none">None</option>
-          <option value="food">Food</option>
-          <option value="handcraft item">Handcraft Item</option>
-          <option value="homemade item">Homemade Item</option>
-        </select>
+      <div className="toolbarContent">
+        <div className="searchBar">
+          <input
+            type="text"
+            name="search"
+            value={this.props.search}
+            onChange={this.props.handleSearchChange}
+            placeholder="Search Products" />
+        </div>
+        <div className="sortBox">
+          <label>Sort: </label>
+          <select name='sort' onChange={this.props.handleSortChange}>
+            <option value="created">By Created</option>
+            <option value="asc">By Price - Ascending</option>
+            <option value="desc">By Price - Descending</option>
+          </select>
+        </div>
+        <div className="filterBox">
+          <label>Filter: </label>
+          <select name="filter" onChange={this.props.handleFilterChange}>
+            <option value="none">None</option>
+            <option value="food">Food</option>
+            <option value="handcraft item">Handcraft Item</option>
+            <option value="homemade item">Homemade Item</option>
+          </select>
+        </div>
       </div>
     )
   }

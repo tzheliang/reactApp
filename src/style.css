@@ -1,26 +1,191 @@
-.mainBody {
+body,html {
+  font-family: 'Open Sans', sans-serif;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-} 
+  height: 100%;
+  overflow: hidden;
+}
+
+.banner {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.5em;
+  padding: 1em;
+  background-color: #039be5;
+  color: #000;
+  font-weight: 400;
+}
+
+.toolbar {
+  background-color: #E8E8E8;
+}
+
+.toolbarContent {
+  display: flex;
+  flex-direction: row;
+  padding: 1em;
+}
+
+.searchBar {
+  margin: 0 5px;
+}
+
+.searchBar input {
+  border-radius: 3px;
+  border: 1px solid white;
+  height: 2em;
+  padding-left: 8px;
+  width: 15em;
+}
+
+.sortBox {
+  margin: 0 5px;
+  padding: 4px;
+  
+}
+
+.sortBox select {
+  border-radius: 3px;
+  border: 1px solid white;
+  height: 2em;
+  padding-left: 8px;
+}
+
+.filterBox {
+  margin: 0 5px;
+  padding: 4px;
+}
+ 
+.filterBox select {
+  border-radius: 3px;
+  border: 1px solid white;
+  height: 2em;
+  padding-left: 8px;
+}
 
 .list {
-  border-color: black;
-  border-width: 0;
-  border-style: solid;
+  border-right: 1px solid black;
   width: 450px;
+  min-width: 450px;
+  overflow: auto;
+  height:79vh;
 }
 
 .details {
-  border: 0px solid red;
   flex-grow: 1;
+  display: flex;
+  flex-direction: row;
 }
 
-img {
+.product {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  padding-bottom: 8px;
+}
+
+.productListDetail {
+  display:flex;
+  flex-direction: column;
+  padding-left: 10px;
+}
+
+.productImage img {
   height: auto;
-  width: 200px;
+  width: 80px;
+  padding: 4px 0;
 }
 
 .productPane {
   display: flex;
   flex-direction: row;
+}
+
+.productList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.seperator {
+  margin: 0;
+}
+
+.productName {
+  padding-bottom: 5px;
+}
+
+.productCategory {
+  padding: 5px 0;
+}
+
+.productPrice {
+  padding-top: 5px;
+}
+
+.product span {
+  color: #1b1b1b;
+}
+
+.detailImageBox img {
+  height: auto;
+  width: 200px;
+}
+
+.detailDescription {
+  display: flex;
+  flex-direction: column;
+  padding-left: 55px;
+}
+
+.detailDescription div:first-child {
+  padding-bottom: 6px;
+}
+
+.detailDesc, .detailPrice, .detailQuantity, .detailCategory{
+  padding: 6px 0;
+}
+
+.detail {
+  display: flex;
+  flex-direction: row;
+  padding: 30px;
+  max-height: 400px;
+}
+
+.product:hover {
+  background-color: rgb(175, 175, 175);
+  cursor: pointer;
+}
+
+.editButton {
+  padding-top: 1em;
+}
+
+.editButton button {
+  border-radius: 10px;
+  border: 1px solid white;
+  height: 2.5em;
+  width: 140px;
+  background-color: #039be5;
+  color: white;
+
+}
+
+.editButton button:hover {
+  background-color: #0288d1;
+  cursor: pointer;
+}
+
+.editFormRow {
+  padding: 0 20px;
+}
+
+.formButtonGroup input:last-child {
+  margin: 0 10px;
+}
+
+.desc span {
+  word-wrap: break-word;
 }
