@@ -1,0 +1,26 @@
+.mainBody {
+  display: flex;
+  flex-direction: column;
+} 
+
+.list {
+  border-color: black;
+  border-width: 0;
+  border-style: solid;
+  width: 450px;
+}
+
+.details {
+  border: 0px solid red;
+  flex-grow: 1;
+}
+
+img {
+  height: auto;
+  width: 200px;
+}
+
+.productPane {
+  display: flex;
+  flex-direction: row;
+}
