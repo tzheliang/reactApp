@@ -440,7 +440,6 @@ function sortProducts(products, sort) {
     return products;
   }
   if (sort === 'asc') {
-    console.log("hello");
     
     products.sort((a,b) => {
       if (parseFloat(a.price) < parseFloat(b.price)) {
